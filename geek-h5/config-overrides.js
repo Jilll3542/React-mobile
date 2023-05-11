@@ -1,10 +1,11 @@
 const path = require('path') 
 
-const { override, addWebpackAlias,addPostcssPlugins } = require('customize-cra')// 配置路径别名// - 所有 src 目录下的文件，都可使用 @/ 开始引用// - 公共 scss 文件，存放在 src/assets/styles 目录下，可使用 @scss/ 开始引用
+const { override, addWebpackAlias,addPostcssPlugins  } = require('customize-cra')// 配置路径别名// - 所有 src 目录下的文件，都可使用 @/ 开始引用// - 公共 scss 文件，存放在 src/assets/styles 目录下，可使用 @scss/ 开始引用
 const alias = addWebpackAlias({  
     '@': path.resolve(__dirname, 'src'),  
     '@scss': path.resolve(__dirname, 'src', 'assets', 'styles')
 })// 导出要进行覆盖的 webpack 配置
+
 
 const px2viewport = require('postcss-px-to-viewport')// 配置路径别名// ...// 配置 PostCSS 样式转换插件
 const postcssPlugins = addPostcssPlugins([  // 移动端布局 viewport 适配方案  
