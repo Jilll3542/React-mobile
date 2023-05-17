@@ -1,12 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from '@/component/NavBar'
 import styles from './index.module.scss'
 import Input from "@/component/Input"
 import { useFormik } from "formik"
 import * as Yup from 'yup'
 import classNames from 'classnames'
+import { useDispatch } from 'react-redux'
+import { sendCode,login } from '@/store/actions/login.js'
+import { Toast } from 'antd-mobile'
+import { useNavigate } from 'react-router-dom'
 export default function Login() {
-  const onExtraClick = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [time, setTime] = useState(0)
+  const onExtraClick = async () => {
+    if (time > 0) return
+    //先对手机号进行验证
+    if (!/^1[3-9]\d{9}$/.test(mobile)) {
+      formik.setTouched
+        ({
+          mobile: true,
+        })
+      return
+    }
+    try {
+      await dispatch(sendCode(mobile))
+      Toast.show({
+        icon: 'success',
+        content: "获取验证码成功",
+        duration: 2000
+      })
+      //开启倒计时
+      setTime(60)
+      let timeId = setInterval(() => {
+        setTime((time) => {
+          if (time === 1) {
+            clearInterval(timeId)
+          }
+          return time - 1
+        })
+
+      }, 1000)
+    } catch (err) {
+      if (err.response) {
+        Toast.show({
+          icon: 'fail',
+          content: err.response.data.message,
+          duration: 2000
+        })
+      } else {
+        Toast.show({
+          content: "服务器繁忙，请稍后重试"
+        })
+      }
+
+
+    }
 
   }
   const formik = useFormik({
@@ -15,9 +64,21 @@ export default function Login() {
       mobile: '13900001111',
       code: '246810'
     },
-    // 提交
-    onSubmit: values => {
-      console.log(values)
+    // 当提交表单的时候会进行触发
+    async onSubmit(values) {
+      try {
+        await dispatch(login(values))
+          Toast.show({
+            icon: 'success',
+            content: "登录成功",
+
+          })
+          navigate('/home')
+      } catch (err) {
+        Toast.show({
+          content: (err.response?.data.message)
+        })
+      }
     },
     validationSchema: Yup.object({
       mobile: Yup.string()
@@ -80,7 +141,7 @@ export default function Login() {
               /> */}
               <Input
                 placeholder="请输入验证码"
-                extra="获取验证码"
+                extra={time === 0 ? "获取验证码" : time + "秒后重试"}
                 onExtraClick={onExtraClick}
                 value={code}
                 name="code"

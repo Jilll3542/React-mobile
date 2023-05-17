@@ -5,13 +5,15 @@ body {
   color: #333;
   font-size: 16px ;
   font-family: PingFangSC;
-  background-color: #fff;
+  background-color: #fff !important;
+   
 }
 
 html,
 body,
 #root {
   height: 100%;
+
 }
 
 body,
