@@ -1,4 +1,5 @@
 import request from "@/utils/request.js"
+import { setTokenInfo } from "@/utils/storage"
 
 export const sendCode = (mobile) => {
     return async() => {
@@ -25,6 +26,7 @@ export const login =(data)=>{
         })
         //保存token到redux中 
         dispatch(saveToken(res.data))
-        console.log(res)
+        //保存到本地
+        setTokenInfo(res.data )
     }
 }
