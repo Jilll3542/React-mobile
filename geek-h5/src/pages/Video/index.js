@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Home() {
+export default function Video() {
   return (
     <div>
-      首页 ssssss
+      video
     </div>
   )
 }

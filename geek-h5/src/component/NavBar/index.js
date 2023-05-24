@@ -3,14 +3,14 @@ import Icon from "@/component/Icon"
 // import "./index.scss"
 import styles from "./index.module.scss" 
 // 自己渲染的组件没办法获取路由信息
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 function NavBar({children,extra}) {
-    const navigate = useNavigate()
+    const navigate = useHistory()
     const back = ()=>{
         // 跳回上一页
         console.log(navigate)
-        navigate(-1)
+        navigate.push(-1)
      
     }
     return (

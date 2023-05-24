@@ -8,9 +8,9 @@ import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import { sendCode,login } from '@/store/actions/login.js'
 import { Toast } from 'antd-mobile'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 export default function Login() {
-  const navigate = useNavigate()
+  const navigate = useHistory()
   const dispatch = useDispatch()
   const [time, setTime] = useState(0)
   const onExtraClick = async () => {
@@ -73,7 +73,7 @@ export default function Login() {
             content: "登录成功",
 
           })
-          navigate('/home')
+          navigate.push('/home')
       } catch (err) {
         Toast.show({
           content: (err.response?.data.message)
