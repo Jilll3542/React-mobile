@@ -1,9 +1,9 @@
-import login from "./login"
-
-const {combineReducers} = require("redux")
-
+import login from "./login";
+import profile from "./profile";
+const { combineReducers } = require("redux");
 
 const reducer = combineReducers({
-  login 
-})
-export default reducer
+  login,
+  profile,
+});
+export default reducer;
