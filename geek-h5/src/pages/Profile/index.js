@@ -1,21 +1,21 @@
-import React,{useEffect} from 'react'
-import Icon from '@/component/Icon'
-import { Link, useHistory } from 'react-router-dom'
-import styles from './index.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUser } from '@/store/actions/profile'
+import React, { useEffect } from "react";
+import Icon from "@/component/Icon";
+import { Link, useHistory } from "react-router-dom";
+import styles from "./index.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "@/store/actions/profile";
 
 export default function Profile() {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const user = useSelector((state)=>state.profile.user)
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.profile.user);
 
-  console.log(user)
+  // console.log(user)
   //页面一进入，就需要发送请求，获取用户信息
-  useEffect(()=>{
-    dispatch(getUser())
-  },[dispatch])
- 
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
   return (
     <div className={styles.root}>
       <div className="profile">
@@ -81,16 +81,22 @@ export default function Profile() {
       <div className="more-service">
         <h3>更多服务</h3>
         <div className="service-list">
-          <div className="service-item" onClick={() => history.push('/profile/feedback')}>
+          <div
+            className="service-item"
+            onClick={() => history.push("/profile/feedback")}
+          >
             <Icon type="iconbtn_feedback" />
             <div>用户反馈</div>
           </div>
-          <div className="service-item" onClick={() => history.push('/profile/chat')}>
+          <div
+            className="service-item"
+            onClick={() => history.push("/profile/chat")}
+          >
             <Icon type="iconbtn_xiaozhitongxue" />
             <div>小智同学</div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

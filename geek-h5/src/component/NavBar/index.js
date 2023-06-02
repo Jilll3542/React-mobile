@@ -4,8 +4,9 @@ import Icon from "@/component/Icon";
 import styles from "./index.module.scss";
 // 自己渲染的组件没办法获取路由信息
 import { useHistory } from "react-router-dom";
+import classNames from "classnames";
 
-function NavBar({ children, extra, onLeftClick }) {
+function NavBar({ children, extra, onLeftClick, className }) {
   const history = useHistory();
   const back = () => {
     // 跳回上一页
@@ -19,7 +20,7 @@ function NavBar({ children, extra, onLeftClick }) {
   return (
     <div>
       {/* 顶部工具栏 */}
-      <div className={styles.root}>
+      <div className={classNames(styles.root, className)}>
         {/* 后退按钮 */}
         <div className="left">
           <Icon type="iconfanhui" onClick={back} />

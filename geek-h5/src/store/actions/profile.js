@@ -33,7 +33,7 @@ export const saveProfile = (payload) => {
 export const getProfile = () => {
   return async (dispatch) => {
     const res = await request.get("/user/profile");
-    console.log(res.data);
+    // console.log(res.data);
     dispatch(saveProfile(res.data));
   };
 };

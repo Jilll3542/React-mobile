@@ -10,8 +10,8 @@ import {
   getProfile,
   updatePhoto,
   updateProfile,
-  logout,
 } from "@/store/actions/profile";
+import { logout } from "@/store/actions/login";
 import classNames from "classnames";
 import EditInput from "./components/EditInput";
 import EditList from "./components/EditList";
@@ -36,7 +36,7 @@ export default function ProfileEdit() {
         title: "拍照",
         onClick: () => {
           //触发点击事件
-          console.log("拍照");
+          //   console.log("拍照");
         },
       },
       {
@@ -99,6 +99,7 @@ export default function ProfileEdit() {
     Toast.show({
       icon: "success",
       content: "修改成功",
+      duration: 1000,
     });
     onClose();
   };
@@ -111,6 +112,7 @@ export default function ProfileEdit() {
     Toast.show({
       icon: "success",
       content: "修改头像成功",
+      duration: 1000,
     });
     onClose();
   };
@@ -123,9 +125,10 @@ export default function ProfileEdit() {
       closeOnAction: true,
 
       actions: [
-        { text: "取消" },
+        { text: "取消", key: 0 },
         {
           text: "确定",
+          key: 1,
           onClick() {
             dispatch(logout());
             //跳转到登录页面
@@ -134,6 +137,7 @@ export default function ProfileEdit() {
             Toast.show({
               icon: "success",
               content: "退出登录成功",
+              duration: 1000,
             });
           },
         },

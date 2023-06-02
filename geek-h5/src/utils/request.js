@@ -31,10 +31,12 @@ instance.interceptors.response.use(
     if (err.response) {
       Toast.show({
         content: err.response.data.message,
+        duration: 1000,
       });
     } else {
       Toast.show({
         content: "网络繁忙，请稍后重试",
+        duration: 1000,
       });
     }
     return Promise.reject(err);
