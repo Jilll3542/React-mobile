@@ -8,6 +8,7 @@ import { getUser } from "@/store/actions/profile";
 export default function Profile() {
   const history = useHistory();
   const dispatch = useDispatch();
+  // const location = useLocation();
   const user = useSelector((state) => state.profile.user);
 
   // console.log(user)
