@@ -6,7 +6,7 @@ import classnames from "classnames";
 import { Route, Switch } from "react-router-dom";
 import AuthRoute from "@/component/AuthRoute";
 
-const Home = lazy(() => import("@/pages/Home/index1"));
+const Home = lazy(() => import("@/pages/Home/index"));
 const QA = lazy(() => import("@/pages/QA"));
 const Video = lazy(() => import("@/pages/Video"));
 const Profile = lazy(() => import("@/pages/Profile"));
