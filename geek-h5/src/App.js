@@ -1,25 +1,22 @@
 import React, { Suspense } from "react";
 // import "./App.scss"
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import AuthRoute from "@/component/AuthRoute";
+import history from "@/utils/history.js";
 const Login = React.lazy(() => import("@/pages/Login"));
 const Layout = React.lazy(() => import("@/pages/Layout"));
 const ProfileEdit = React.lazy(() => import("@/pages/Profile/Edit"));
 const ProfileChat = React.lazy(() => import("@/pages/Profile/Chat"));
 export default function App() {
   return (
-    <Router>
+    //注意:BrowserRouter等于Router history={history}
+    <Router history={history}>
       <div className="app">
         {/* <Link to="/login">登录</Link>
       <Link to="/home">首页</Link> */}
 
         <Suspense fallback={<div>loading... </div>}>
-          <Router>
+          <Route>
             <div className="app">
               <Switch>
                 <Redirect exact from="/" to="/home"></Redirect>
@@ -35,7 +32,7 @@ export default function App() {
                 ></AuthRoute>
               </Switch>
             </div>
-          </Router>
+          </Route>
         </Suspense>
       </div>
     </Router>

@@ -66,7 +66,7 @@ export default function ProfileEdit() {
     ],
   };
   const onBirthdayChange = (e) => {
-    console.log(e);
+    // console.log(e);
     onCommit("birthday", dayjs(e).format("YYYY-MM-DD"));
   };
   const handleChange = (newValue) => {
@@ -90,7 +90,7 @@ export default function ProfileEdit() {
   // 获取 redux 中的 profile 数据
   const profile = useSelector((state) => state.profile.profile);
   const onCommit = async (type, value) => {
-    console.log(type, value);
+    // console.log(type, value);
     await dispatch(
       updateProfile({
         [type]: value,

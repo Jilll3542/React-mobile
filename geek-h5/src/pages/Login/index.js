@@ -8,7 +8,8 @@ import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { sendCode, login } from "@/store/actions/login.js";
 import { Toast } from "antd-mobile";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router";
+// import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Login() {
   const navigate = useHistory();
@@ -70,10 +71,11 @@ export default function Login() {
         content: "登录成功",
         duration: 1000,
       });
-      if (location.from) {
-        navigate.push(location.from.pathname);
+
+      if (location.state) {
+        navigate.replace(location.state.from);
       } else {
-        navigate.push("/home");
+        navigate.replace("/home");
       }
     },
     validationSchema: Yup.object({
