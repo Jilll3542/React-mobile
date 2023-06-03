@@ -7,11 +7,20 @@ export default function index({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={({ location }) => {
-        console.log(hasToken());
+        // console.log(hasToken());
         if (hasToken()) {
           return <Component></Component>;
         } else {
-          return <Redirect to="/login" from={location.pathname}></Redirect>;
+          return (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: {
+                  from: location.pathname,
+                },
+              }}
+            ></Redirect>
+          );
         }
       }}
     ></Route>
