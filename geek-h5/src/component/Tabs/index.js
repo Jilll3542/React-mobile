@@ -17,6 +17,7 @@ const Tabs = ({ index = 0, tabs = [], children, onChange }) => {
 
   // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
   // https://github.com/facebook/react/issues/14830
+  //当activeIndex发生了变化，修改线的位置以及tabBar中心的位置
   useEffect(() => {
     setActiveIndex(index);
   }, [index]);

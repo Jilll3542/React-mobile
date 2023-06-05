@@ -1,6 +1,10 @@
-import { SAVE_ALL_CHANNELS, SAVE_CHANNELS } from "../action_types/home";
+import {
+  SAVE_ALL_CHANNELS,
+  SAVE_ARTICLE_LIST,
+  SAVE_CHANNELS,
+} from "../action_types/home";
 
-const initValue = { userChannels: [], allChannels: [] };
+const initValue = { userChannels: [], allChannels: [], articles: {} };
 export default function reducer(state = initValue, action) {
   const { type, payload } = action;
   switch (type) {
@@ -13,6 +17,17 @@ export default function reducer(state = initValue, action) {
       return {
         ...state,
         allChannels: payload,
+      };
+    case SAVE_ARTICLE_LIST:
+      return {
+        ...state,
+        articles: {
+          ...state.articles,
+          [payload.channelId]: {
+            timestamp: payload.timestamp,
+            list: payload.list,
+          },
+        },
       };
     default:
       return state;
