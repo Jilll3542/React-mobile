@@ -3,6 +3,7 @@ import {
   SAVE_ALL_CHANNELS,
   SAVE_ARTICLE_LIST,
   SAVE_CHANNELS,
+  SAVE_MORE_ARTICLE_LIST,
 } from "../action_types/home";
 import { getLocalChannels, hasToken, setLocalChannels } from "@/utils/storage";
 /**
@@ -97,8 +98,9 @@ export const addChannel = (channel) => {
     }
   };
 };
+
 //获取文章列表数据
-export const getArticleList = (channelId, timestamp) => {
+export const getMoreArticleList = (channelId, timestamp, loadMore = false) => {
   return async (dispatch) => {
     const res = await request({
       url: "/articles",
@@ -108,11 +110,36 @@ export const getArticleList = (channelId, timestamp) => {
         timestamp: Date.now(),
       },
     });
+
+    dispatch(
+      setMoreArticleList({
+        channelId,
+        timestamp: res.data.pre_timestamp,
+        list: res.data.results,
+        loadMore,
+      })
+    );
+  };
+};
+
+//获取文章列表数据
+export const getArticleList = (channelId, timestamp, loadMore = false) => {
+  return async (dispatch) => {
+    const res = await request({
+      url: "/articles",
+      method: "get",
+      params: {
+        channel_id: channelId,
+        timestamp: Date.now(),
+      },
+    });
+
     dispatch(
       setArticleList({
         channelId,
         timestamp: res.data.pre_timestamp,
         list: res.data.results,
+        loadMore,
       })
     );
   };
@@ -122,5 +149,68 @@ export const setArticleList = (payload) => {
   return {
     type: SAVE_ARTICLE_LIST,
     payload,
+  };
+};
+export const setMoreArticleList = (payload) => {
+  return {
+    type: SAVE_MORE_ARTICLE_LIST,
+    payload,
+  };
+};
+export const setMoreAction = (payload) => {
+  return {
+    type: "home/setMoreAction",
+    payload,
+  };
+};
+
+export const unLikeArticle = (articleId) => {
+  return async (dispatch, getState) => {
+    await request({
+      method: "post",
+      url: "/article/dislikes",
+      data: {
+        target: articleId,
+      },
+    });
+    // const list = getState()
+    dispatch(setArticleList(getState().home));
+    //把当前频道对应的文章删除
+    const channelId = getState().home.moreAction.channelId;
+    const articles = getState().home.articles[channelId];
+    dispatch(
+      setArticleList({
+        channelId,
+        timestamp: articles.timestamp,
+        list: articles.list.filter((item) => item.art_id !== articleId),
+      })
+    );
+  };
+};
+
+// export const reportArticle = (articleid, reportId) => {};
+
+export const reportArticle = (articleId, reportId) => {
+  return async (dispatch, getState) => {
+    await request({
+      method: "post",
+      url: "/article/reports",
+      data: {
+        target: articleId,
+        type: reportId,
+      },
+    });
+    // const list = getState()
+    dispatch(setArticleList(getState().home));
+    //把当前频道对应的文章删除
+    const channelId = getState().home.moreAction.channelId;
+    const articles = getState().home.articles[channelId];
+    dispatch(
+      setArticleList({
+        channelId,
+        timestamp: articles.timestamp,
+        list: articles.list.filter((item) => item.art_id !== articleId),
+      })
+    );
   };
 };

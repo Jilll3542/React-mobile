@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { useEffect, useState } from "react";
 // import request from "@/utils/request";
 import { useDispatch, useSelector } from "react-redux";
-import { getArticleList } from "@/store/actions/home";
+import { getArticleList, getMoreArticleList } from "@/store/actions/home";
 import { PullToRefresh, InfiniteScroll } from "antd-mobile";
 // import { useState } from "react";
 // import dayjs from "dayjs";
@@ -31,22 +31,33 @@ const ArticleList = ({ channelId, activeId }) => {
   }, [channelId, activeId, dispatch, current]);
   const onRefresh = async () => {
     //下拉刷新，需要重新加载最新的数据
-    dispatch(getArticleList(channelId, Date.now()));
+    setHasMore(true);
+    await dispatch(getArticleList(channelId, Date.now()));
   };
   //是否有更多数据
   const [hasMore, setHasMore] = useState(true);
   //代表是否正在加载数据
   const [loading, setLoading] = useState(false);
-  const loadMore = () => {
+  const loadMore = async () => {
     // console.log("需要加载更多数据");
+    //如果在加载中，不允许重复加载
     if (loading) {
       return;
     }
+    //如果不是当前的频道，也不需要加载
+    if (channelId !== activeId) return;
+    //如果没有timestamp,如果没有更多数据，就不懂发送给请求
+    if (!current.timestamp) {
+      setHasMore(false);
+      return;
+    }
     setLoading(true);
-    console.log("需要加载更多数据");
-    setTimeout(() => {
+
+    try {
+      await dispatch(getMoreArticleList(channelId, current.timestamp));
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
   //如果没有文章数据，可以先不渲染
   if (!current) {
@@ -59,7 +70,7 @@ const ArticleList = ({ channelId, activeId }) => {
         <div className="articles">
           {current.list.map((item) => (
             <div className="article-item" key={item.art_id}>
-              <ArticleItem article={item}></ArticleItem>
+              <ArticleItem article={item} channelId={channelId}></ArticleItem>
             </div>
           ))}
         </div>

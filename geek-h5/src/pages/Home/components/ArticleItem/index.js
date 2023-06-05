@@ -4,6 +4,9 @@ import dayjs from "dayjs";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import styles from "./index.module.scss";
+// import { hasToken } from "@/utils/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { setMoreAction } from "@/store/actions/home";
 
 dayjs.extend(relativeTime);
 
@@ -17,7 +20,8 @@ dayjs.extend(relativeTime);
  * @param {Number} commentCount 回复数
  * @param {String} publishDate 发布日期
  */
-const ArticleItem = ({ article }) => {
+const ArticleItem = ({ article, channelId }) => {
+  const dispatch = useDispatch();
   // console.log(article);
   const {
     cover: { type, images },
@@ -27,6 +31,7 @@ const ArticleItem = ({ article }) => {
     pubdate,
   } = article;
   // const { type, images } = cover;
+  const isLogin = useSelector((state) => !!state.login.token);
 
   return (
     <div className={styles.root}>
@@ -60,7 +65,20 @@ const ArticleItem = ({ article }) => {
         <span>{comm_count} 评论</span>
         <span>{dayjs(pubdate).from(Date.now())}</span>
         <span className="close">
-          <Icon type="iconbtn_essay_close" />
+          {isLogin && (
+            <Icon
+              type="iconbtn_essay_close"
+              onClick={() =>
+                dispatch(
+                  setMoreAction({
+                    visible: true,
+                    articleId: article.art_id,
+                    channelId,
+                  })
+                )
+              }
+            />
+          )}
         </span>
       </div>
     </div>

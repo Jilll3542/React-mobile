@@ -3,10 +3,15 @@ import styles from "./index.module.scss";
 import Tabs from "@/component/Tabs";
 import Icon from "@/component/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserChannels, getAllChannels } from "@/store/actions/home";
+import {
+  getUserChannels,
+  getAllChannels,
+  setMoreAction,
+} from "@/store/actions/home";
 import { Drawer } from "antd-mobile-v2";
 import Channels from "./components/Channels";
 import ArticleList from "./components/ArticleList";
+// import MoreAction from "./components/MoreAction";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -29,6 +34,13 @@ export default function Home() {
         index={active}
         onChange={(e) => {
           setActive(e);
+          dispatch(
+            setMoreAction({
+              visible: false,
+              articleId: "",
+              channelId: tabs[e].id,
+            })
+          );
         }}
       >
         {/* 放对应数量的ArticleList */}
@@ -66,6 +78,7 @@ export default function Home() {
         open={open}
         style={{ height: document.documentElement.clientHeight }}
       ></Drawer>
+      {/* <MoreAction></MoreAction> */}
     </div>
   );
 }
